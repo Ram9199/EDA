@@ -8186,28 +8186,26 @@ Cleaned dataset saved as 'cleaned_house_data.csv'
 <li>Corrected data quality issues</li>
 <li>Removed outliers</li>
 <li>Created new features</li>
-<li>Simplified kitchen features</li>
 <li>Encoded categorical variables</li>
 <li>Normalized numerical features</li>
 </ol>
 <h2 id="Key-Results"><font size="5">Key Results</font><a class="anchor-link" href="#Key-Results">¶</a></h2><ul>
 <li>Original dataset shape: (5000, 16)</li>
-<li>Cleaned dataset shape: (4806, 343)</li>
+<li>Cleaned dataset shape: (4806, 2479)</li>
 </ul>
 <h2 id="Data-Transformation"><font size="5">Data Transformation</font><a class="anchor-link" href="#Data-Transformation">¶</a></h2><ul>
-<li>Rows reduced: 194 (3.88% reduction, likely due to outlier removal)</li>
-<li>Columns increased: from 16 to 343 (due to one-hot encoding of categorical variables)</li>
+<li>Rows reduced: 194 (3.88% reduction, due to outlier removal)</li>
+<li>Columns increased: from 16 to 2479 (due to one-hot encoding of categorical variables)</li>
 </ul>
 <h2 id="Cleaned-Dataset-Information"><font size="5">Cleaned Dataset Information</font><a class="anchor-link" href="#Cleaned-Dataset-Information">¶</a></h2><ul>
 <li>Index: 4806 entries</li>
-<li>Columns: 343 entries</li>
+<li>Columns: 2479 entries</li>
 <li>Column types:<ul>
-<li>bool: 327 (likely from one-hot encoding)</li>
+<li>bool: 2465 (from one-hot encoding)</li>
 <li>float64: 14</li>
-<li>object: 2</li>
 </ul>
 </li>
-<li>Memory usage: 2.1+ MB</li>
+<li>Memory usage: Significantly increased due to one-hot encoding</li>
 </ul>
 <h2 id="Summary-Statistics-of-Cleaned-Dataset"><font size="5">Summary Statistics of Cleaned Dataset</font><a class="anchor-link" href="#Summary-Statistics-of-Cleaned-Dataset">¶</a></h2><ul>
 <li>All numerical features have been standardized:<ul>
@@ -8222,26 +8220,32 @@ Cleaned dataset saved as 'cleaned_house_data.csv'
 </li>
 </ul>
 <h2 id="Data-Quality-Improvements"><font size="5">Data Quality Improvements</font><a class="anchor-link" href="#Data-Quality-Improvements">¶</a></h2><ol>
-<li>Missing values imputed</li>
+<li>Missing values imputed (numeric with median, categorical with mode)</li>
 <li>Extreme values in 'bedrooms' and 'bathrooms' capped at 10</li>
 <li>'year_built' values of 0 replaced with median</li>
-<li>Outliers removed using 3-standard deviation method</li>
-<li>Kitchen features simplified and encoded</li>
-<li>Categorical variables one-hot encoded</li>
-</ol>
-<h2 id="Warnings-and-Considerations"><font size="5">Warnings and Considerations</font><a class="anchor-link" href="#Warnings-and-Considerations">¶</a></h2><ul>
-<li>FutureWarnings related to inplace operations on DataFrame copies<ul>
-<li>These don't affect the current results but suggest updating the code in future pandas versions</li>
+<li>Outliers removed using 3-standard deviation method for key numerical features</li>
+<li>Categorical variables one-hot encoded:<ul>
+<li>kitchen_features: Converted to multiple boolean columns for each feature</li>
+<li>fireplaces: Encoded into separate columns for each unique value</li>
+<li>floor_covering: Each type of floor covering converted to a boolean column</li>
+<li>HOA: Encoded into separate columns for each unique value</li>
 </ul>
 </li>
+<li>Numerical features normalized using z-score standardization</li>
+</ol>
+<h2 id="Considerations"><font size="5">Considerations</font><a class="anchor-link" href="#Considerations">¶</a></h2><ul>
+<li>High dimensionality due to extensive one-hot encoding, particularly of 'kitchen_features' which likely had many unique combinations</li>
+<li>Potential for multicollinearity among one-hot encoded features, especially within the same original categorical variable</li>
+<li>Standardization of all numerical features may affect interpretability</li>
+<li>The large number of boolean columns from one-hot encoding may require special consideration in model selection and interpretation</li>
 </ul>
 <h2 id="Next-Steps"><font size="5">Next Steps</font><a class="anchor-link" href="#Next-Steps">¶</a></h2><ol>
-<li>Address the FutureWarnings by modifying the code to avoid inplace operations on copies</li>
-<li>Verify the impact of one-hot encoding on the dataset's dimensionality</li>
-<li>Consider feature selection or dimensionality reduction techniques due to the high number of columns</li>
-<li>Examine the distribution of the new features (bedroom_bathroom_ratio and price_per_sqft)</li>
-<li>Assess the impact of outlier removal on the dataset's representativeness</li>
-<li>Prepare the cleaned dataset for modeling, possibly splitting into training and testing sets</li>
+<li>Investigate the impact of high dimensionality on model performance</li>
+<li>Consider feature selection or dimensionality reduction techniques</li>
+<li>Examine the distribution and importance of one-hot encoded features</li>
+<li>Analyze the relationships between new features (bedroom_bathroom_ratio, price_per_sqft) and the target variable</li>
+<li>Prepare the cleaned dataset for modeling, including train-test split</li>
+<li>Evaluate the need for feature scaling in different modeling algorithms</li>
 </ol>
 <p>The cleaned dataset has been saved as 'cleaned_house_data.csv' for further analysis and modeling.</p>
 </div>
